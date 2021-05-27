@@ -2,7 +2,7 @@
 ##### IN:
 ```
 gcc fftw_helloworld.c -lfftw3 -lm
-./a.out > ft.txt      
+./a.out > ft.txt
 python graph.py
 ```   
 ##### OUT:
@@ -11,7 +11,7 @@ python graph.py
 ## fftw3-mpi_helloworld.c
 ##### IN:
 ```
-gcc fftw3-mpi_helloworld.c -lfftw3_mpi -lfftw3 -lm -lmpich    
+gcc fftw3-mpi_helloworld.c -lfftw3_mpi -lfftw3 -lm -lmpich
 mpiexec -n 4 ./a.out
 ```
 ##### OUT:
