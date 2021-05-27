@@ -55,8 +55,8 @@ int main(){
     for(int i = 0; i<128; i+=1){
         x_values[i] = i;
         in[i][1] = 0;
-        in[i][0] = 2*M_PI*x_values[i] / 32;
-        in[i][0] += 2*M_PI*x_values[i] / 64;
+        in[i][0] = sin(2*M_PI*x_values[i] / 32);
+        in[i][0] += sin(2*M_PI*x_values[i] / 64);
     }
 
     p = fftw_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
@@ -85,3 +85,5 @@ int main(){
     fftw_free(in); fftw_free(out);
 }
 */
+
+//gcc fftw_helloworld.c -lfftw3 -lm
