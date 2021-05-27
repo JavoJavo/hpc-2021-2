@@ -47,18 +47,41 @@ int main(int argc, char ** argv){
     const ptrdiff_t N = 128;
     fftw_complex *in, *out;
     fftw_plan p;
-    in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
-    out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
-    double x_values[N];
+    ptrdiff_t alloc_local, local_ni, local_no, local_i_start, local_o_start;
+    
+    //in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
+    //out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
+    /*double x_values[N];
     for(int i = 0; i<128; i+=1){
         x_values[i] = i;
         in[i][1] = 0;
         in[i][0] = sin(2*M_PI*x_values[i] / 32);
         in[i][0] += sin(2*M_PI*x_values[i] / 64);
-    }
+    }*/
 
     MPI_Init(&argc, &argv);
     fftw_mpi_init();
+
+    int sign; unsigned int flags;
+    int rnk;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rnk);
+    alloc_local = fftw_mpi_local_size_1d(N, MPI_COMM_WORLD,
+                                        FFTW_FORWARD, FFTW_ESTIMATE,
+                                        &local_ni, &local_i_start,
+                                        &local_no, &local_o_start);
+    printf("I am process %d | local_n0 = %td | local_0_start = %td    || alloc_local = %td\n", rnk+1, local_ni, local_i_start, alloc_local);
+    
+    // NOW THAT WE HAVE ALLOCATED SPACE FOR THE DATA, WE HAVE TO INITIALLIZE IT
+
+
+
+
+
+    /*
+    ptrdiff_t fftw_mpi_local_size(int rnk, const ptrdiff_t *n, MPI_Comm comm,
+                              ptrdiff_t *local_n0, ptrdiff_t *local_0_start);
+
+
 
     p = fftw_mpi_plan_dft_1d(N, in, out, MPI_COMM_WORLD, FFTW_FORWARD, FFTW_ESTIMATE);
     //...
@@ -66,12 +89,12 @@ int main(int argc, char ** argv){
     //...
     fftw_destroy_plan(p);
     fftw_free(in); fftw_free(out);
-
+    */
     fftw_mpi_cleanup();
     MPI_Finalize();
     fftw_mpi_cleanup();
 
-    print_complex_array(out, N);
+    //print_complex_array(out, N);
     
     return 0;
 }
@@ -83,6 +106,8 @@ with -lfftw3_mpi -lfftw3 -lm on Unix in double precision,
 
 también hay que linkear mpich con -lmpich al parecer entonces queda:
 gcc fftw3-mpi_helloworld.c -lfftw3_mpi -lfftw3 -lm -lmpich
+y luego.. :
+mpiexec -n 40 ./a.out 
 
 
 
