@@ -21,3 +21,4 @@ I am process 2 | local_n0 = 32 | local_0_start = 32    || alloc_local = 32
 I am process 3 | local_n0 = 32 | local_0_start = 64    || alloc_local = 32
 I am process 4 | local_n0 = 32 | local_0_start = 96    || alloc_local = 32
 ```
+\* Update: now it prints the input and the output (but in no particular order)
